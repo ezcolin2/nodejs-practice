@@ -17,5 +17,19 @@ const login = ()=>{
         body : JSON.stringify(req)
 
     })
+    .then(res=>res.json())
+    .then(
+        res=>{
+            if(res.success){
+                location.href = "/";
+                document.write(res.msg);
+            }
+            else{
+                alert(res.msg);
+            }
+        }
+    )
+    .catch(err=>
+        console.error(new Error("login error!")))
 };
 btn.addEventListener("click",login);
