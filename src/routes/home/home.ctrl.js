@@ -1,31 +1,22 @@
 const UserStorage = require("../../models/UserStorage");
+const User = require("../../models/User.js");
 const output = {
-
     hello : (req,res)=>{
         res.render("home/index");
     },
 
     login : (req,res)=>{
         res.render("home/login");
+    },
+
+    register : (req,res)=>{
+        res.render("home/register");
     }
 }
 const process = {
     login : (req,res)=>{
-        const id = req.body.id;
-        const pwd = req.body.pwd;
-        const users = UserStorage.getUsers("id","pwd","name");
-        const idx = users.id.indexOf(id);
-        const response = {};
-        if(users.id.includes(id)){
-            if(pwd == users.pwd[idx]){
-                response.success = true;
-                response.msg = `hello! ${id}`;
-                return res.json(response);
-            }
-        }
-        
-        response.success = false;
-        response.msg = `k you`;
+        const user = new User(req.body);
+        const response = user.login();
         return res.json(response);
     }
 };

@@ -1,3 +1,4 @@
+//Copyright (c) 2022 by Aigars Silkalns (https://codepen.io/colorlib/pen/rxddKy)
 "use strict";
 class UserStorage{
 
@@ -14,6 +15,17 @@ class UserStorage{
         },{});
         console.log(newUsers);
         return newUsers;
+    }
+    static userInfo(id){
+        const temp = this.#users;
+        const idx = temp.id.indexOf(id);
+        const keys = Object.keys(temp);
+        const newUser = keys.reduce((newUser,key)=>{
+            newUser[key] = temp[key][idx];
+            return newUser;
+        },{});
+        return newUser;
+    
     }
 };
 
