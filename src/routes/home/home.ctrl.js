@@ -1,8 +1,4 @@
-const users = {
-    id : ["hello","json"],
-    pwd : [123,1234]
-};
-
+const UserStorage = require("../../models/UserStorage");
 const output = {
 
     hello : (req,res)=>{
@@ -16,23 +12,23 @@ const output = {
 const process = {
     login : (req,res)=>{
         const id = req.body.id;
-        const idx = users.id.indexOf(id);
         const pwd = req.body.pwd;
+        const users = UserStorage.getUsers("id","pwd","name");
+        const idx = users.id.indexOf(id);
+        const response = {};
         if(users.id.includes(id)){
             if(pwd == users.pwd[idx]){
-                return res.json({
-                    success : true,
-                    msg : "login success!"
-                });
+                response.success = true;
+                response.msg = `hello! ${id}`;
+                return res.json(response);
             }
-            
         }
-        return res.json({
-            success : false,
-            msg : "login failed!"
-        });
+        
+        response.success = false;
+        response.msg = `k you`;
+        return res.json(response);
     }
-}
+};
 module.exports = {
     output,
     process
