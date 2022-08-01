@@ -1,3 +1,4 @@
+"use strict";
 const UserStorage = require("../../models/UserStorage");
 const User = require("../../models/User.js");
 const output = {
@@ -18,6 +19,13 @@ const process = {
         const user = new User(req.body);
         const response = user.login();
         return res.json(response);
+    },
+    register : (req,res)=>{
+        const user = new User(req.body);
+        const response = user.register();
+        UserStorage.userSave(user);
+        return res.json(response);
+        
     }
 };
 module.exports = {

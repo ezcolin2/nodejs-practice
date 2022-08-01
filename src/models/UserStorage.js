@@ -1,4 +1,3 @@
-//Copyright (c) 2022 by Aigars Silkalns (https://codepen.io/colorlib/pen/rxddKy)
 "use strict";
 class UserStorage{
 
@@ -26,6 +25,12 @@ class UserStorage{
         },{});
         return newUser;
     
+    }
+    static userSave(user){
+        const users = this.#users;
+        users.id.push(user.body.id);
+        users.pwd.push(user.body.pwd);
+        users.name.push(user.body.name);
     }
 };
 

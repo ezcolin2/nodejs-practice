@@ -1,5 +1,4 @@
-console.log("js good!");
-console.log("nye");
+"use strict";
 const id = document.querySelector("#id");
 
 const pwd = document.querySelector("#pwd");
