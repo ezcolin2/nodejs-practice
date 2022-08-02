@@ -4,9 +4,10 @@ class User{
     constructor(body){
         this.body = body;
     }
-    login(){
+    async login(){
         const response = {};
-        const temp = UserStorage.userInfo(this.body.id);
+        const temp = await UserStorage.userInfo(this.body.id);
+
         if(temp.id==this.body.id&&temp.pwd ==this.body.pwd){
             response.success = true;
             response.msg = `login success!! ${temp.id}`;
@@ -17,10 +18,10 @@ class User{
         return response;
     }
     
-    register(){
+    async register(){
         const response = {};
         const temp = this.body;
-        const users = UserStorage.getUsers("id","pwd");
+        const users = await UserStorage.getUsers("id","pwd");
         if(users.id.includes(temp.id)){
             response.success = false;
             response.msg = "아이디가 이미존재합니다";
@@ -34,6 +35,7 @@ class User{
         }
         response.success = true;
         response.msg = "회원가입 성공!";
+        UserStorage.userSave(temp);
         return response;
 
     }

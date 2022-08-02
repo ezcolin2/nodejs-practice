@@ -1,36 +1,50 @@
 "use strict";
 class UserStorage{
 
-    static #users = {
-        id : ["hello","json"],
-        pwd : [123,1234],
-        name : ["chulsoo","minsoo"]
-    };
     static getUsers(...fields){
-        const temp = this.#users;
-        const newUsers = fields.reduce((newUsers,field)=>{
-            newUsers[field]=temp[field];
-            return newUsers;
-        },{});
-        console.log(newUsers);
-        return newUsers;
+        const fs = require("fs").promises;
+        return fs.readFile("./src/databases/user.json")
+        .then(data=>{
+            const user = JSON.parse(data);
+            const userInform = fields.reduce((newUser,key)=>{
+                newUser[key] = user[key];
+                return newUser;
+            }
+            ,{});
+            return userInform;
+        });
     }
+
     static userInfo(id){
-        const temp = this.#users;
-        const idx = temp.id.indexOf(id);
-        const keys = Object.keys(temp);
-        const newUser = keys.reduce((newUser,key)=>{
-            newUser[key] = temp[key][idx];
-            return newUser;
-        },{});
-        return newUser;
+        const fs = require("fs").promises;
+        return fs.readFile("./src/databases/user.json")
+        .then(data=>{
+            const users = JSON.parse(data);
+            const idx = users.id.indexOf(id);
+            const keys = Object.keys(users);
+            const userInform = keys.reduce((newUsers,key)=>{
+                newUsers[key] = users[key][idx];
+                return newUsers;
+            },{});
+            return userInform;
+        });
+        // const temp = this.#users;
+        // const idx = temp.id.indexOf(id);
+        // const keys = Object.keys(temp);
+        // const newUser = keys.reduce((newUser,key)=>{
+        //     newUser[key] = temp[key][idx];
+        //     return newUser;
+        // },{});
+        // return newUser;
     
     }
-    static userSave(user){
-        const users = this.#users;
-        users.id.push(user.body.id);
-        users.pwd.push(user.body.pwd);
-        users.name.push(user.body.name);
+    static async userSave(user){
+        const fs = require("fs").promises;
+        const users = await this.getUsers("id","pwd","name");
+        users.id.push(user.id);
+        users.pwd.push(user.pwd);
+        users.name.push(user.name);
+        fs.writeFile("./src/databases/user.json",JSON.stringify(users));
     }
 };
 
